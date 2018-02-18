@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!--xml 形式 配置的 DAO-->
+<mapper namespace="com.mybatis.day01.domain.UserMapper">
+
+    <resultMap id="userMap" type="User" >
+        <id column="id" property="id"/>
+        <result column="username" property="username" />
+        <result column="password" property="password" />
+        <result column="age" property="age" />
+    </resultMap>
+    <!--
+        #{} 的意思就是调用对应字段的 getter 方法，获取数值
+        所以 #{} 里的 字段是 对象的字段 不是数据库里的 column name
+        所以不是查询操作 不存在 resultMap 属性
+    -->
+    <!--insert id="save" parameterType="User" >
+        INSERT INTO user(username,password,age) VALUES (#{username},#{password},#{age})
+    </insert-->
+
+    <select id="get" parameterType="java.lang.Long" resultType="User" resultMap="userMap">
+        SELECT * FROM user WHERE id = #{id}
+    </select>
+    <update id="update" parameterType="com.mybatis.day01.domain.User">
+        UPDATE user SET username=#{username} , password=#{password} , age=#{age} WHERE id=#{id}
+    </update>
+    <delete id="delete" parameterType="java.lang.Long" >
+        DELETE FROM user WHERE id=#{idddddd}
+    </delete>
+    <select id="listAll" resultType="com.mybatis.day01.domain.User" resultMap="userMap">
+        SELECT * FROM user
+    </select>
+
+    <select id="listAllWithConditon" resultType="com.mybatis.day01.domain.User" resultMap="userMap">
+        SELECT * FROM user
+        <where>
+            <if test="age!=null">
+                age &lt;= #{age}
+            </if>
+        </where>
+    </select>
+
+    <select id="login" resultType="com.mybatis.day01.domain.User" resultMap="userMap">
+        SELECT * FROM user WHERE username=#{username} AND password=#{password}
+    </select>
+
+</mapper>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <!--这个是加载配置 主要关于加载那个 table ，来自那个 database-->
+    <properties resource="jdbc.properties">
+    </properties>
+    <!--alias 是面向 mybatis 全局的-->
+    <typeAliases>
+        <typeAlias type="com.mybatis.day01.domain.User" alias="User" />
+        <typeAlias type="com.mybatis.day02.many2one.Employee" alias="Employee" />
+        <typeAlias type="com.mybatis.day02.many2one.Department" alias="Department" />
+    </typeAliases>
+
+    <!--面向mysql 的一些接口配置-->
+    <environments default="">
+        <environment id="">
+            <!--可以直接写JDBC， 为缩略称-->
+            <transactionManager type="org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory"></transactionManager>
+            <!--可以直接写POOLED， 为缩略-->
+            <dataSource type="org.apache.ibatis.datasource.pooled.PooledDataSourceFactory">
+
+                <!--另外可以使用 <properties> tag 的<resource> 来配置 properties 便于维护-->
+                <!-- fuck 留意哦 占位符如 $ # 后都是加 {} 不是 () 哦-->
+                <property name="driver" value="${driver}"/>
+                <property name="url" value="${url}"/>
+                <property name="username" value="${username}"/>
+                <property name="password" value="${password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+    <!--mapper 配置-->
+    <mappers>
+        <!--相对资源目录的地址 也就是 src 文件夹为根目录-->
+        <mapper resource="UserMapper.xml"/>
+        <mapper resource="EmployeeMapper.xml"/>
+        <mapper resource="DepartmentMapper.xml"/>
+    </mappers>
+</configuration>

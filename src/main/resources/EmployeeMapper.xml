@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mybatis.day02.many2one.EmployeeMapper">
+
+    <resultMap id="employeeMap" type="Employee" >
+        <id column="id" property="id"/>
+        <result column="employee_name" property="name" />
+        <!--这里体现了 resultMap 的无可替代的优点相对 resultType，由于 dept_id 在employee 对象里面是没有的（同名匹配必定失败 显示 null），
+        这时候通过 map 可以指定 dept_id 的对应的值来自 dept 对象的 id 属性-->
+        <result column="dept_id" property="dept.id" />
+    </resultMap>
+
+    <select id="get" resultMap="employeeMap" >
+        SELECT * FROM Employee WHERE id=#{id}
+    </select>
+    <insert id="save" useGeneratedKeys="true" keyColumn="dept_id" keyProperty="deptId">
+        INSERT INTO Employee(employee_name,dept_id) VALUES(#{name},#{dept.id})
+    </insert>
+</mapper>
